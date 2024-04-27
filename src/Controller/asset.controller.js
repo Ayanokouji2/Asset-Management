@@ -135,7 +135,41 @@ export const deleteAsset = async (req, res) => {
             message: "Asset deleted successfully",
             deletedAsset
         })
-        
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
+export const getAssetById = async (req, res) => {
+    try {
+        const assetId = req.params.id;
+
+        if(!assetId){
+            return res.status(400).json({
+                success: false,
+                message: "Asset ID is required to get"
+            })
+        }
+
+        const asset = await Asset.findById(assetId)
+
+        if(!asset){
+            return res.status(500).json({
+                success: false,
+                message: "Asset not found"
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Asset found successfully",
+            asset
+        })
+
     } catch (error) {
         res.status(500).json({
             success: false,
