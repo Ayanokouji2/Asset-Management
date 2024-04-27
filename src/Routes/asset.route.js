@@ -8,7 +8,7 @@ router
     .post(createAsset)
 
 router
-    .route("/update-asset/:id")
+    .route("/update-asset")
     .patch(updateAsset)
 
 router

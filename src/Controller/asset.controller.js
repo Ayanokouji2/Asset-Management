@@ -2,9 +2,9 @@ import { Asset } from "../Models/asset.model.js";
 
 export const createAsset = async (req, res) => {
     try {
-        const { name, capacity, available_unit, category, description } = req.body;
+        const { name, capacity, category, description } = req.body;
 
-        if ([name, category, description].some(item => item === undefined || (typeof item === 'string' && item.trim() === '')) || isNaN(capacity) || isNaN(available_unit)) {
+        if ([name, category, description].some(item => item === undefined || (typeof item === 'string' && item.trim() === '')) || isNaN(capacity) ) {
             return res.status(400).json({
                 success: false,
                 message: "All fields are required"
@@ -14,7 +14,6 @@ export const createAsset = async (req, res) => {
         const asset = await Asset.create({
             name,
             capacity,
-            available_unit,
             category,
             description
         })
@@ -42,9 +41,9 @@ export const createAsset = async (req, res) => {
 
 export const updateAsset = async (req, res) => {
     try {
-        const { name, capacity, available_unit, category } = req.body;
+        const { name, capacity, isAvailable, category } = req.body;
 
-        if ([name, capacity, available_unit, category]
+        if ([name, capacity, isAvailable, category]
             .every((item) => (item === undefined))) {
             return res.status(400).json({
                 success: false,
@@ -52,7 +51,8 @@ export const updateAsset = async (req, res) => {
             })
         }
 
-        const assetId = req.params.id;
+        console.log(req.params.query)
+        const assetId = req.params.query;
 
         if (!assetId) {
             return res.status(400).json({
@@ -67,8 +67,6 @@ export const updateAsset = async (req, res) => {
             assetUpdate.name = name
         else if (capacity)
             assetUpdate.capacity = capacity
-        else if (available_unit)
-            assetUpdate.available_unit = available_unit
         else if (category)
             assetUpdate.category = category
 

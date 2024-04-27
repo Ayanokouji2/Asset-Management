@@ -10,8 +10,8 @@ const assetSchema = new Schema(
             type: Number,
             required: true
         },
-        available_unit:{
-            type: Number,
+        isAvailable:{
+            type: Boolean,
             default: true
         },
         category:{

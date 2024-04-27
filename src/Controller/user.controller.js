@@ -11,7 +11,7 @@ export const Login = async( req, res)=>{
             })
         }
 
-        const user  = await User.findOne(username)
+        const user  = await User.findOne({username})
 
         if(!user){
             return res.status(401).json({
@@ -20,7 +20,7 @@ export const Login = async( req, res)=>{
             })
         }
 
-        if(!user.isPasswordCorrect(password)){
+        if(! await user.isPasswordCorrect(password)){
             return res.status(401).json({
                 success: false,
                 message: 'Invalid Credentials'
@@ -58,12 +58,12 @@ export const Signup = async ( req, res)=>{
             username,
             email,
             password
-        }).select('-password')
+        })
 
         res.status(201).json({
             success: true,
             message: 'User Created Successfully',
-            data: user
+            user
         })
         
     } catch (error) {
