@@ -1,16 +1,40 @@
+import { User } from '../Models/user.model.js'
+
 export const Login = async( req, res)=>{
     try {
-        const check = await collection.findOne({ username: req.body.username });
+        const { username, password } = req.body;
 
-        if (check) {    
-            if (check.password === req.body.password) {
-                res.redirect("https://assetifyy.vercel.app/");
-            } else {
-                res.render("login", { errorMessage: "Invalid username or  password" });
-            }
-        } else {
-            res.render("login", { errorMessage: "Invalid username or password" });
+        if(!username ||  !password){
+            return res.status(400).json({
+                success: false,
+                message: 'Please provide username and password'
+            })
         }
+
+        const user  = await User.findOne(username)
+
+        if(!user){
+            return res.status(401).json({
+                success: false,
+                message: 'No user Found'
+            })
+        }
+
+        if(!user.isPasswordCorrect(password)){
+            return res.status(401).json({
+                success: false,
+                message: 'Invalid Credentials'
+            })
+        }
+
+        req.user = user
+
+        res.status(200).json({
+            success: true,
+            message: 'Login Successful',
+        })
+
+
     } catch (error) {
         res.status(500).json({
             success: false,
