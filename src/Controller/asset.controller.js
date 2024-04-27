@@ -40,8 +40,7 @@ export const createAsset = async (req, res) => {
     }
 }
 
-
-export const updateAssest = async (req, res) => {
+export const updateAsset = async (req, res) => {
     try {
         const { name, capacity, available_unit, category } = req.body;
 
@@ -50,6 +49,15 @@ export const updateAssest = async (req, res) => {
             return res.status(400).json({
                 success: false,
                 message: "Input Some fields to Update"
+            })
+        }
+
+        const assetId = req.params.id;
+
+        if(!assetId){
+            return res.status(400).json({
+                success: false,
+                message: "Asset ID is required to delete"
             })
         }
 
@@ -64,7 +72,7 @@ export const updateAssest = async (req, res) => {
         else if (category)
             assetUpdate.category = category
 
-        const asset = await Asset.findByIdAndUpdate(req.params.id, assetUpdate, { new: true })
+        const asset = await Asset.findByIdAndUpdate(assetId, assetUpdate, { new: true })
 
         if (!asset) {
             return res.status(500).json({
@@ -177,3 +185,4 @@ export const getAssetById = async (req, res) => {
         })
     }
 }
+
