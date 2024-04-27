@@ -1,11 +1,10 @@
-import { Asset } from "../Models/asset.model";
+import { Asset } from "../Models/asset.model.js";
 
 export const createAsset = async (req, res) => {
     try {
         const { name, capacity, available_unit, category } = req.body;
 
-        if ([name, capacity, available_unit, category]
-            .some((item) => (item !== undefined && item.trim() !== ""))) {
+        if ([name, category].some(item => item === undefined || (typeof item === 'string' && item.trim() === '')) || isNaN(capacity) || isNaN(available_unit)) {
             return res.status(400).json({
                 success: false,
                 message: "All fields are required"
@@ -35,7 +34,7 @@ export const createAsset = async (req, res) => {
     } catch (error) {
         res.status(500).json({
             success: false,
-            message: error.message
+            message: "Error while creating Asset " + error.message
         })
     }
 }
@@ -45,7 +44,7 @@ export const updateAsset = async (req, res) => {
         const { name, capacity, available_unit, category } = req.body;
 
         if ([name, capacity, available_unit, category]
-            .some((item) => (item !== undefined && item.trim() !== ""))) {
+            .every((item) => (item === undefined))) {
             return res.status(400).json({
                 success: false,
                 message: "Input Some fields to Update"
@@ -54,7 +53,7 @@ export const updateAsset = async (req, res) => {
 
         const assetId = req.params.id;
 
-        if(!assetId){
+        if (!assetId) {
             return res.status(400).json({
                 success: false,
                 message: "Asset ID is required to delete"
@@ -122,16 +121,16 @@ export const deleteAsset = async (req, res) => {
     try {
         const assetId = req.params.id;
 
-        if(!assetId){
+        if (!assetId) {
             return res.status(400).json({
                 success: false,
                 message: "Asset ID is required to delete"
             })
         }
 
-        const deletedAsset = await Asset.findByIdAndDelete(assetId, {new: true})
-        
-        if(!deletedAsset){
+        const deletedAsset = await Asset.findByIdAndDelete(assetId, { new: true })
+
+        if (!deletedAsset) {
             return res.status(500).json({
                 success: false,
                 message: "Asset not deleted"
@@ -156,7 +155,7 @@ export const getAssetById = async (req, res) => {
     try {
         const assetId = req.params.id;
 
-        if(!assetId){
+        if (!assetId) {
             return res.status(400).json({
                 success: false,
                 message: "Asset ID is required to get"
@@ -165,7 +164,7 @@ export const getAssetById = async (req, res) => {
 
         const asset = await Asset.findById(assetId)
 
-        if(!asset){
+        if (!asset) {
             return res.status(500).json({
                 success: false,
                 message: "Asset not found"

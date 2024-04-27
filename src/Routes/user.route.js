@@ -3,9 +3,9 @@ import { Router } from 'express'
 const router = Router()
 
 
-router
-    .route('/login')
-    .post(login)
+// router
+//     .route('/login')
+//     .post(login)
 
 
 
