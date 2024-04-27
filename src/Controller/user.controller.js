@@ -45,13 +45,26 @@ export const Login = async( req, res)=>{
 
 export const Signup = async ( req, res)=>{
     try {
-        const data = {
-            username: req.body.username,
-            password: req.body.password
-        };
-        await collection.insertMany([data]);
-    
-        res.render("login", { errorMessage: undefined });
+        const { username, email, password } = req.body;
+
+        if(!username || !email || !password){
+            return res.status(400).json({
+                success: false,
+                message: 'Please provide all the required fields'
+            })
+        }
+
+        const user = await User.create({
+            username,
+            email,
+            password
+        }).select('-password')
+
+        res.status(201).json({
+            success: true,
+            message: 'User Created Successfully',
+            data: user
+        })
         
     } catch (error) {
         res.status(500).json({
