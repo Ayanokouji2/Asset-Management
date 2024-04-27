@@ -4,12 +4,13 @@ export const reserveAsset = async (req, res) => {
     try {
         const userId = req.user._id
 
-        const { asset_Id, duration } = req.body
+        const { asset_Id, duration, date } = req.body
 
         const reserved = await Reserved.create({
             userId,
             asset_Booked: asset_Id,
-            duration
+            duration,
+            date
         })
 
         if(!reserved){
