@@ -85,3 +85,27 @@ export const updateAssest = async (req, res) => {
         })
     }
 }
+
+export const getAllAsset = async (req, res) => {
+    try {
+        const asset = await Asset.find()
+
+        if (!asset) {
+            return res.status(500).json({
+                success: false,
+                message: "Asset not found"
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Asset found successfully",
+            asset
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
