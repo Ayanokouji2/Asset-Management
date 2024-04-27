@@ -2,9 +2,9 @@ import { Asset } from "../Models/asset.model.js";
 
 export const createAsset = async (req, res) => {
     try {
-        const { name, capacity, available_unit, category } = req.body;
+        const { name, capacity, available_unit, category, description } = req.body;
 
-        if ([name, category].some(item => item === undefined || (typeof item === 'string' && item.trim() === '')) || isNaN(capacity) || isNaN(available_unit)) {
+        if ([name, category, description].some(item => item === undefined || (typeof item === 'string' && item.trim() === '')) || isNaN(capacity) || isNaN(available_unit)) {
             return res.status(400).json({
                 success: false,
                 message: "All fields are required"
@@ -15,7 +15,8 @@ export const createAsset = async (req, res) => {
             name,
             capacity,
             available_unit,
-            category
+            category,
+            description
         })
 
         if (!asset) {
