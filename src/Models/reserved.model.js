@@ -13,6 +13,10 @@ const reservedSchema = new Schema(
         duration:{
             type: Number,
             required: true
+        },
+        date:{
+            type: Date,
+            default: Date.now
         }
     }
 )
