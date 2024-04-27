@@ -109,3 +109,37 @@ export const getAllAsset = async (req, res) => {
         })
     }
 }
+
+export const deleteAsset = async (req, res) => {
+    try {
+        const assetId = req.params.id;
+
+        if(!assetId){
+            return res.status(400).json({
+                success: false,
+                message: "Asset ID is required to delete"
+            })
+        }
+
+        const deletedAsset = await Asset.findByIdAndDelete(assetId, {new: true})
+        
+        if(!deletedAsset){
+            return res.status(500).json({
+                success: false,
+                message: "Asset not deleted"
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Asset deleted successfully",
+            deletedAsset
+        })
+        
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
