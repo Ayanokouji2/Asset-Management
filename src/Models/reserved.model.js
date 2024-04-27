@@ -6,7 +6,7 @@ const reservedSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: 'User',
         },
-        assest_Booked: {
+        asset_Booked: {
             type: Schema.Types.ObjectId,
             ref: 'Asset'
         },
