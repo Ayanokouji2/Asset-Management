@@ -41,9 +41,9 @@ export const createAsset = async (req, res) => {
 
 export const updateAsset = async (req, res) => {
     try {
-        const { name, capacity, isAvailable, category } = req.body;
+        const { name, capacity,  category, assetid , description} = req.body;
 
-        if ([name, capacity, isAvailable, category]
+        if ([name, capacity,  category, assetid]
             .every((item) => (item === undefined))) {
             return res.status(400).json({
                 success: false,
@@ -51,27 +51,22 @@ export const updateAsset = async (req, res) => {
             })
         }
 
-        console.log(req.params.query)
-        const assetId = req.params.query;
-
-        if (!assetId) {
-            return res.status(400).json({
-                success: false,
-                message: "Asset ID is required to delete"
-            })
-        }
-
         const assetUpdate = {}
 
         if (name && name.trim() !== "")
             assetUpdate.name = name
-        else if (capacity)
+        if (capacity)
             assetUpdate.capacity = capacity
-        else if (category)
+        if (category)
             assetUpdate.category = category
+        if(description)
+            assetUpdate.description = description
 
-        const asset = await Asset.findByIdAndUpdate(assetId, assetUpdate, { new: true })
+        console.log(assetUpdate)
 
+        const asset = await Asset.findByIdAndUpdate(assetid, assetUpdate, { new: true })
+        
+        console.log(asset)
         if (!asset) {
             return res.status(500).json({
                 success: false,

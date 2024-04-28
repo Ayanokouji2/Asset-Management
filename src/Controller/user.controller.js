@@ -29,6 +29,7 @@ export const Login = async( req, res)=>{
 
         req.user = user
 
+        res.cookie("userId",user._id,{httpOnly:false,secure:true})
         res.status(200).json({
             success: true,
             message: 'Login Successful',
@@ -36,6 +37,7 @@ export const Login = async( req, res)=>{
 
 
     } catch (error) {
+        console.log(error.message)
         res.status(500).json({
             success: false,
             message: error.message
@@ -65,6 +67,20 @@ export const Signup = async ( req, res)=>{
             message: 'User Created Successfully',
             user
         })
+        
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
+export const getUser = async (req, res)=>{
+    try {
+        const { username } = req.params
+        const user = await User.findOne({username})
+
         
     } catch (error) {
         res.status(500).json({

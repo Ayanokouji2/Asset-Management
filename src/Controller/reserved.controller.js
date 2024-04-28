@@ -2,17 +2,18 @@ import { Reserved } from '../Models/reserved.model.js'
 
 export const reserveAsset = async (req, res) => {
     try {
-        const userId = req.user._id
-
-        const { asset_Id, duration, date } = req.body
-
+        
+        const { duration, date, userId } = req.body
+        const asset_id = req.params.id
+        const userID =  userId
+        
         const reserved = await Reserved.create({
-            userId,
-            asset_Booked: asset_Id,
+            userId: userID,
+            asset_Booked: asset_id,
             duration,
             date
         })
-
+        
         if(!reserved){
             return res.status(400).json({
                 success: false,

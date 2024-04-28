@@ -11,7 +11,7 @@ const reservedSchema = new Schema(
             ref: 'Asset'
         },
         duration:{
-            type: Number,
+            type: String,
             required: true
         },
         date:{
