@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { createAsset, deleteAsset, getAllAsset, getAssetById, updateAsset } from '../Controller/asset.controller.js';
+import { createAsset, deleteAsset, getAllAsset, getAssetById, getAssetByName, updateAsset } from '../Controller/asset.controller.js';
 
 const router = Router()
 
@@ -22,6 +22,10 @@ router
 router
     .route("/get-asset/:id")
     .get(getAssetById)
+
+    router
+    .route("/get-asset-name/:name")
+    .get(getAssetByName)
 
 
 

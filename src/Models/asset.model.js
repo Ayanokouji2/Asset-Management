@@ -4,7 +4,8 @@ const assetSchema = new Schema(
     {
         name:{
             type: String,
-            required: true
+            required: true,
+            unique: true
         },
         capacity:{
             type: Number,
